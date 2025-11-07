@@ -10,8 +10,11 @@ class ExpandedWidget extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.yellow),
+      theme: ThemeData(primarySwatch: Colors.yellow,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    ),
       home: MyExpandableScreen(),
+
     );
   }
 
@@ -21,27 +24,38 @@ class MyExpandableScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Expandable widget"),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+
       ),
       body: Row(
 
         children: [
-          Container(
+          Expanded(
+            flex: 2,
+            child: Container(
 
-            width: 50,
-            height: 100,
-            color: Colors.yellow,
+              width: 50,
+              height: 100,
+              color: Colors.yellow,
+            ),
           ),
-          Container(
+          Expanded(
+            flex: 1,
+            child: Container(
 
-            width: 50,
-            height: 100,
-            color: Colors.red,
+              width: 50,
+              height: 100,
+              color: Colors.red,
+            ),
           ),
-          Container(
+          Expanded(
+            flex: 3,
+            child: Container(
 
-            width: 50,
-            height: 100,
-            color: Colors.brown,
+              width: 50,
+              height: 100,
+              color: Colors.brown,
+            ),
           ),
           Expanded(
             child: Container(
