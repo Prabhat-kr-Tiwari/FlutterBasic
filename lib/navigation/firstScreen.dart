@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_basic/navigation/IntroPage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
-  runApp(PositionWidget());
+  runApp(FirstScreenWidget());
 }
 
-class PositionWidget extends StatelessWidget {
-  const PositionWidget({super.key});
+class FirstScreenWidget extends StatelessWidget {
+  const FirstScreenWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'PositionWidget',
+      title: 'FirstScreenWidget',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.yellow,
@@ -31,33 +32,27 @@ class PositionWidget extends StatelessWidget {
           ),
         ),
       ),
-      home: PositionWidgetScreen(),
+      home: IntroPage(),
     );
   }
 }
 
-class PositionWidgetScreen extends StatefulWidget {
+class FirstScreen extends StatefulWidget {
   @override
-  State<PositionWidgetScreen> createState() =>
-      _PositionWidgetScreenScreenState();
+  State<FirstScreen> createState() =>
+      _FirstScreenState();
 }
 
-class _PositionWidgetScreenScreenState extends State<PositionWidgetScreen> {
+class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("poistion widget")),
-      body:Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Colors.blueGrey,
-        child: Stack(
-          children: [
-            Positioned(
-              bottom: 41,
-                right: 41,
-                child: Container(width: 100,height: 100,color: Colors.white,))
-          ],
+      appBar: AppBar(title: const Text("ConstraintBoxWidgetScreen")),
+      body:Center(
+        child: Container(
+          color: Colors.orange,
+          child:Text("Hello",style: TextStyle(fontSize: 21),),
+
         ),
       ),
     );

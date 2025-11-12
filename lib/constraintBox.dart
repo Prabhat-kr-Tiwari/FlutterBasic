@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
-  runApp(PositionWidget());
+  runApp(ConstraintBoxWidget());
 }
 
-class PositionWidget extends StatelessWidget {
-  const PositionWidget({super.key});
+class ConstraintBoxWidget extends StatelessWidget {
+  const ConstraintBoxWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'PositionWidget',
+      title: 'ConstraintBoxWidget',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.yellow,
@@ -31,34 +31,32 @@ class PositionWidget extends StatelessWidget {
           ),
         ),
       ),
-      home: PositionWidgetScreen(),
+      home: ConstraintBoxWidgetScreen(),
     );
   }
 }
 
-class PositionWidgetScreen extends StatefulWidget {
+class ConstraintBoxWidgetScreen extends StatefulWidget {
   @override
-  State<PositionWidgetScreen> createState() =>
-      _PositionWidgetScreenScreenState();
+  State<ConstraintBoxWidgetScreen> createState() =>
+      _ConstraintBoxWidgetScreenScreenState();
 }
 
-class _PositionWidgetScreenScreenState extends State<PositionWidgetScreen> {
+class _ConstraintBoxWidgetScreenScreenState extends State<ConstraintBoxWidgetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("poistion widget")),
-      body:Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Colors.blueGrey,
-        child: Stack(
-          children: [
-            Positioned(
-              bottom: 41,
-                right: 41,
-                child: Container(width: 100,height: 100,color: Colors.white,))
-          ],
+      appBar: AppBar(title: const Text("ConstraintBoxWidgetScreen")),
+      body:ConstrainedBox(
+
+        constraints: BoxConstraints(
+          minHeight: 30
+              ,minWidth: 40,
+          maxWidth: 60,
+          maxHeight: 70
         ),
+        child:Text("Hello",style: TextStyle(fontSize: 21),),
+
       ),
     );
   }
