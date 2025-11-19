@@ -44,16 +44,37 @@ class _BmiScreenState extends State<BmiScreen> {
   var weightController = TextEditingController();
   var fitController = TextEditingController();
   var inchController = TextEditingController();
-  var result ="";
+  var result = "";
   var bgColors;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Bmi"),backgroundColor: bgColors,
-      ),
+      appBar: AppBar(title: const Text("Bmi"), backgroundColor: bgColors),
       body: Container(
-        color: bgColors,
+        //007 Sunny MorningGet .PNG#f6d365→#fda085
+        decoration: BoxDecoration(
+          // gradient: LinearGradient(
+          //   colors: [
+          //     Color(0xfff6d365),
+          //     Color(0xfffda085),
+          //     Color(0xffff9b7e)
+          //   ],
+          //   begin: FractionalOffset(1.0, 0.0),
+          //     end: FractionalOffset(0.0, 1.0),
+          //   stops: [0.0,0.5,1.0]
+          // ),
+          gradient: RadialGradient(
+            colors: [
+              Color(0xfff6d365),
+              Color(0xfffda085),
+
+            ],
+            center: Alignment.topLeft,
+
+            stops: [0.0,1.0]
+          ),
+        ),
         child: Center(
           child: Container(
             width: 300,
@@ -72,7 +93,7 @@ class _BmiScreenState extends State<BmiScreen> {
                   ),
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 11,),
+                SizedBox(height: 11),
                 TextField(
                   controller: fitController,
                   decoration: InputDecoration(
@@ -81,7 +102,7 @@ class _BmiScreenState extends State<BmiScreen> {
                   ),
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 11,),
+                SizedBox(height: 11),
                 TextField(
                   controller: inchController,
                   decoration: InputDecoration(
@@ -90,46 +111,48 @@ class _BmiScreenState extends State<BmiScreen> {
                   ),
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 16,),
-                ElevatedButton(onPressed: (){
-                  var weight =  weightController.text.toString();
-                  var fit =  fitController.text.toString();
-                  var inch =  inchController.text.toString();
-                  if(weight!=""&&fit!=""&&inch!=""){
-                    //bmi
-                    var iwt = int.parse(weight);
-                    var ifit = int.parse(fit);
-                    var iinch = int.parse(inch);
+                SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    var weight = weightController.text.toString();
+                    var fit = fitController.text.toString();
+                    var inch = inchController.text.toString();
+                    if (weight != "" && fit != "" && inch != "") {
+                      //bmi
+                      var iwt = int.parse(weight);
+                      var ifit = int.parse(fit);
+                      var iinch = int.parse(inch);
 
-                    var totalInch = (ifit*12)+iinch;
-                    var totalcm =  totalInch*2.54;
-                    var totalM=totalcm/100;
-                    var bmi = iwt/(totalM*totalM);
-                    var msg="";
-                    setState(() {
-                      if(bmi>25){
-                        msg = "You're OverWeight";
-                        bgColors = Colors.orange.shade200;
+                      var totalInch = (ifit * 12) + iinch;
+                      var totalcm = totalInch * 2.54;
+                      var totalM = totalcm / 100;
+                      var bmi = iwt / (totalM * totalM);
+                      var msg = "";
+                      setState(() {
+                        if (bmi > 25) {
+                          msg = "You're OverWeight";
+                          bgColors = Colors.orange.shade200;
+                        } else if (bmi < 18) {
+                          msg = "You're UnderWeight";
+                          bgColors = Colors.red.shade200;
+                        } else {
+                          msg = "You're Healthy";
+                          bgColors = Colors.green.shade200;
+                        }
+                        result =
+                            "$msg \n Your BMI is ${bmi.toStringAsFixed(2)}";
+                      });
+                    } else {
+                      setState(() {
+                        result = "Fill all required feilds";
+                      });
+                    }
+                  },
+                  child: Text("Calculate"),
+                ),
+                SizedBox(height: 16),
 
-                      }else if(bmi<18){
-                        msg = "You're UnderWeight";
-                        bgColors = Colors.red.shade200;
-                      }else{
-                        msg = "You're Healthy";
-                        bgColors = Colors.green.shade200;
-                      }
-                      result = "$msg \n Your BMI is ${bmi.toStringAsFixed(2)}";
-                    });
-
-                  }else{
-                    setState(() {
-                      result = "Fill all required feilds";
-                    });
-                  }
-                }, child: Text("Calculate")),
-                SizedBox(height: 16,),
-
-                Text(result,style: TextStyle(fontWeight: FontWeight.bold),)
+                Text(result, style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
           ),
