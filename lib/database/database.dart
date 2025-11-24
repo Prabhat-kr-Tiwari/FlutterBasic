@@ -1,9 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_basic/database/data/home_page.dart';
+import 'package:flutter_basic/database/data/local/db_helper.dart';
+import 'package:flutter_basic/database/dbProvider.dart';
+import 'package:flutter_basic/database/theme_provider.dart';
+import 'package:provider/provider.dart';
 
-
-void main() {
+/*
+void main () {
   runApp(FlutterDatabaseWidget());
+}*/
+
+/*void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => DBProvider(dbHelper: DBHelper.getInstance()),
+      child: FlutterDatabaseWidget(),
+    ),
+  );
+}*/
+void main() {
+  runApp(
+    MultiProvider(
+      providers: [
+
+        ChangeNotifierProvider(create:  (context) => DBProvider(dbHelper: DBHelper.getInstance())),
+        ChangeNotifierProvider(create:  (context) => ThemeProvider()),
+      ],
+      child: FlutterDatabaseWidget(),
+    ),
+  );
 }
 
 class FlutterDatabaseWidget extends StatelessWidget {
@@ -14,6 +39,8 @@ class FlutterDatabaseWidget extends StatelessWidget {
     return MaterialApp(
       title: 'FLutter database',
       debugShowCheckedModeBanner: false,
+      themeMode: context.watch<ThemeProvider>().getThemeValue()? ThemeMode.dark:ThemeMode.light,
+      darkTheme: ThemeData.dark(),
       theme: ThemeData(
         primarySwatch: Colors.yellow,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
@@ -39,20 +66,15 @@ class FlutterDatabaseWidget extends StatelessWidget {
 
 class DatabaseScreen extends StatefulWidget {
   @override
-  State<DatabaseScreen> createState() =>
-      _DatabaseScreenState();
+  State<DatabaseScreen> createState() => _DatabaseScreenState();
 }
 
 class _DatabaseScreenState extends State<DatabaseScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Database")),
-      body: Container(
-        child: Text("data"),
-      ),
+      body: Container(child: Text("data")),
     );
   }
 }

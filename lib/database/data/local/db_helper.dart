@@ -15,10 +15,10 @@ class DBHelper {
     return DBHelper._();
   }
 
-  final String TABLE_NOTE = "note";
-  final String COLUMN_NOTE_SNO = "s_no";
-  final String COLUMN_NOTE_TITLE = "title";
-  final String COLUMN_NOTE_DESCRIPTION = "description";
+  static String TABLE_NOTE = "note";
+  static String COLUMN_NOTE_SNO = "s_no";
+  static String COLUMN_NOTE_TITLE = "title";
+  static String COLUMN_NOTE_DESCRIPTION = "description";
 
   Database? myDb;
 

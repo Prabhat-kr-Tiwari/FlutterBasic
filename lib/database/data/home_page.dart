@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_basic/database/add_note_page.dart';
 import 'package:flutter_basic/database/data/local/db_helper.dart';
+import 'package:flutter_basic/database/dbProvider.dart';
+import 'package:flutter_basic/database/settings_page.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
+/*class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageScreenState();
 }
@@ -51,7 +55,7 @@ class _HomePageScreenState extends State<HomePage> {
                         children: [
                           InkWell(onTap:(){
 
-                            showModalBottomSheet(
+                            */ /*showModalBottomSheet(
                               context: context,
                               isScrollControlled: true,
                               builder: (bottomSheetContext) {
@@ -59,7 +63,9 @@ class _HomePageScreenState extends State<HomePage> {
                                 descriptionController.text = myNotes[index][dbHelper?.COLUMN_NOTE_DESCRIPTION];
                                 return getBottomSheet(isUpdate: true,sno:myNotes[index][dbHelper?.COLUMN_NOTE_SNO] ) ;
                               },
-                            );
+                            );*/ /*
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddNotePage(isUpdate: true,title: myNotes[index][dbHelper?.COLUMN_NOTE_TITLE],description: myNotes[index][dbHelper?.COLUMN_NOTE_DESCRIPTION],sno: myNotes[index][dbHelper?.COLUMN_NOTE_SNO],)));
+
                           },child: Icon(Icons.edit)),
                           InkWell(onTap:() async {
                            bool? rowAffected =  await dbHelper?.deleteNote(sno: myNotes[index][dbHelper?.COLUMN_NOTE_SNO]);
@@ -79,17 +85,21 @@ class _HomePageScreenState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
 
-          /*bool? isNotesAdded =  await dbHelper?.addNote(title: "my note1", description: "read system design");
+          */ /*bool? isNotesAdded =  await dbHelper?.addNote(title: "my note1", description: "read system design");
          if(isNotesAdded!){
            getNotes();
-         }*/
-          showModalBottomSheet(
+         }*/ /*
+          */ /*showModalBottomSheet(
             context: context,
             isScrollControlled: true,
             builder: (bottomSheetContext) {
               return getBottomSheet() ;
             },
-          );
+          );*/ /*
+          //new page open
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddNotePage()));
+
+
         },
         child: Icon(Icons.add),
       ),
@@ -203,4 +213,132 @@ class _HomePageScreenState extends State<HomePage> {
     );
   }
 
+}*/
+
+//using the provider
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageScreenState();
+}
+
+class _HomePageScreenState extends State<HomePage> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<DBProvider>().getInitialNotes();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Notes"),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (_) {
+              return [
+                PopupMenuItem(
+                  child: Row(
+                    children: [
+                      Icon(Icons.settings),
+                      SizedBox(width: 11),
+                      Text("Settings"),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingsPage()),
+                    );
+                  },
+                ),
+              ];
+            },
+          ),
+        ],
+      ),
+      body: Consumer<DBProvider>(
+        builder: (ctx, provider, __) {
+          List<Map<String, dynamic>> myNotes = provider.getNotes();
+          return myNotes.isNotEmpty
+              ? ListView.builder(
+                itemCount: myNotes.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: Text('${index + 1}'),
+                    title: Text(
+                      myNotes[index][DBHelper.COLUMN_NOTE_TITLE] ?? "No Title",
+                    ),
+                    subtitle: Text(
+                      myNotes[index][DBHelper.COLUMN_NOTE_DESCRIPTION],
+                    ),
+                    trailing: SizedBox(
+                      width: 50,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => AddNotePage(
+                                        isUpdate: true,
+                                        title:
+                                            myNotes[index][DBHelper
+                                                ?.COLUMN_NOTE_TITLE],
+                                        description:
+                                            myNotes[index][DBHelper
+                                                ?.COLUMN_NOTE_DESCRIPTION],
+                                        sno:
+                                            myNotes[index][DBHelper
+                                                ?.COLUMN_NOTE_SNO],
+                                      ),
+                                ),
+                              );
+                            },
+                            child: Icon(Icons.edit),
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              //delete
+                            },
+                            child: Icon(Icons.delete, color: Colors.red),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              )
+              : Center(child: Text("No notes"));
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          /*bool? isNotesAdded =  await dbHelper?.addNote(title: "my note1", description: "read system design");
+         if(isNotesAdded!){
+           getNotes();
+         }*/
+          /*showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (bottomSheetContext) {
+              return getBottomSheet() ;
+            },
+          );*/
+          //new page open
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddNotePage()),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
 }
